@@ -26,7 +26,7 @@ export default function Data() {
     return (
         <div className="flex flex-col max-w-5xl w-full justify-center items-center gap-10">
             <p className="text-3xl">Data List</p>
-            <div className='px-8 pt-4 pb-8 border border-neutral-400'>
+            <div className="px-8 pt-4 pb-8 border border-neutral-400">
                 <table className="table-auto">
                     <thead className="border-b border-neutral-400">
                         <tr>
