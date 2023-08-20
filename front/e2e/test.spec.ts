@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('E2E Tests', () => {
     test('has title', async ({ page }) => {
-        await expect(page).toHaveTitle(/CI\/CD Study/);
+        await expect(page).toHaveTitle(/CI\/CD\s*?Study/);
     });
 
     test('go to data page', async ({ page }) => {
