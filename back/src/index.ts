@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import cors, { CorsOptions } from 'cors';
-import express, { NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 
 const app: express.Express = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 
@@ -17,7 +17,7 @@ app.use(cors(corsOptions));
 
 const prisma = new PrismaClient();
 
-app.get('/', async (_, res, next: NextFunction): Promise<void> => {
+app.get('/', async (_: Request, res: Response): Promise<void> => {
     try {
         const users = await prisma.user.findMany();
 
@@ -25,10 +25,10 @@ app.get('/', async (_, res, next: NextFunction): Promise<void> => {
     } catch (error) {
         res.status(500);
     }
-
-    next();
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`start on port ${port}`);
 });
+
+export { app, server };

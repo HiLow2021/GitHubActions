@@ -3,10 +3,12 @@
         "autoincrement",
         "codepaths",
         "datasource",
+        "lcov",
         "msedge",
         "mydb",
         "tailwindcss",
         "tsbuildinfo",
+        "unmocked",
         "viewports"
     ]
 }
