@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc --build",
+    "build": "npx prisma generate && npx tsc --build",
     "debug": "npx ts-node ./src/index.ts",
     "start": "node ./build/index.js",
     "test": "jest"

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 type Data = {
     id: number;
     name: string;
+    age: number;
 };
 
 export default function Data() {
@@ -32,6 +33,7 @@ export default function Data() {
                         <tr>
                             <th className="px-8 py-4">ID</th>
                             <th className="px-8 py-4">Name</th>
+                            <th className="px-8 py-4">Age</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +41,7 @@ export default function Data() {
                             <tr key={x.id} className="border-b border-neutral-400">
                                 <td className="px-8 py-2">{x.id}</td>
                                 <td className="px-8 py-2">{x.name}</td>
+                                <td className="px-8 py-2">{x.age}</td>
                             </tr>
                         ))}
                     </tbody>

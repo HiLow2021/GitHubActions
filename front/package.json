@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "npx playwright test",
+    "test-visualize": "npx playwright test --headed --workers 1"
   },
   "dependencies": {
     "@types/node": "20.4.10",
