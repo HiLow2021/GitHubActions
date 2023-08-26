@@ -35,9 +35,7 @@ jobs:
         working-directory: ./back
       - name: Import SQL file
         run: |
-          mysql -h 127.0.0.1 --port 3306 -u root -ppassword mydb < ./docker/sql/01_create_database.sql
-          mysql -h 127.0.0.1 --port 3306 -u root -ppassword mydb < ./docker/sql/02_create_table.sql
-          mysql -h 127.0.0.1 --port 3306 -u root -ppassword mydb < ./docker/sql/03_insert_table.sql
+          cat ./docker/sql/*.sql | mysql -h 127.0.0.1 --port 3306 -u root -p password mydb
       - name: Run tests
         run: npm run test
         working-directory: ./back
