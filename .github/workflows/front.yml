@@ -8,8 +8,9 @@ on:
 
 jobs:
   test:
-    name: Test on ${{ matrix.os }} and ${{ matrix.browser }}
+    name: Frontend Tests on ${{ matrix.os }} and ${{ matrix.browser }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
