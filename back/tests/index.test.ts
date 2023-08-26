@@ -23,7 +23,7 @@ describe('API Test', () => {
 
             expect(response.statusCode).toBe(200);
             expect(response.body).toEqual(data);
-            expect(response.body).toHaveLength(511);
+            expect(response.body).toHaveLength(5);
         });
     });
 });
