@@ -39,5 +39,9 @@ jobs:
         run: npm ci
       - name: Install browsers
         run: npx playwright install --with-deps
+      - name: Start front
+        run: |
+          npm run build
+          npm run start &
       - name: Run tests
         run: npx playwright test
