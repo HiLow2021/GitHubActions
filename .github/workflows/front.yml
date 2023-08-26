@@ -48,7 +48,7 @@ jobs:
       - name: Start back
         run: |
           npm run build
-          npm rub start &
+          npm run start &
         env:
           DATABASE_URL: "mysql://root:password@localhost:3306/mydb"
         working-directory: ./back
