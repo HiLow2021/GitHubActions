@@ -9,8 +9,8 @@ on:
 jobs:
   test:
     name: Frontend Tests on ${{ matrix.os }} and ${{ matrix.browser }}
-    runs-on: ${{ matrix.os }}
     timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
