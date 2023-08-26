@@ -27,7 +27,8 @@ jobs:
     steps:
       - name: Setup database
         run: |
-          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ../docker/sql -name '*.sql' | sort))"
+          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ./sql -name '*.sql' | sort))"
+        working-directory: ./docker
 
   test:
     name: Frontend Tests on ${{ matrix.os }}
