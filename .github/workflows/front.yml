@@ -11,8 +11,27 @@ defaults:
     working-directory: ./front
 
 jobs:
+  db:
+    name: Setup MySQL
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: password 
+          MYSQL_DATABASE: mydb 
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 # サービスのヘルスチェックを設定する
+    steps:
+      - name: Setup database
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ../docker/sql -name '*.sql' | sort))"
+
   test:
     name: Frontend Tests on ${{ matrix.os }}
+    needs: db
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
     strategy:
@@ -42,9 +61,6 @@ jobs:
         working-directory: ./back
       - name: Install browsers
         run: npx playwright install --with-deps
-      - name: Setup database
-        run: |
-          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ../docker/sql -name '*.sql' | sort))"
       - name: Start back
         run: |
           npm run build
