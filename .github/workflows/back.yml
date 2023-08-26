@@ -11,8 +11,8 @@ defaults:
     working-directory: ./back
 
 jobs:
-  db:
-    name: Setup MySQL
+  test:
+    name: Backend Tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
     services:
@@ -27,19 +27,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Setup database
-        run: |
-          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ./sql -name '*.sql' | sort))"
-        working-directory: ./docker
-
-  test:
-    name: Backend Tests
-    needs: db
-    timeout-minutes: 10
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -49,6 +36,10 @@ jobs:
       - name: Setup prisma
         run: |
           npx prisma generate
+      - name: Import sql to db
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ./sql -name '*.sql' | sort))"
+        working-directory: ./docker
       - name: Run tests
         run: npm run test
         env:

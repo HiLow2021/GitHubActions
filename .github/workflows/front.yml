@@ -11,8 +11,8 @@ defaults:
     working-directory: ./front
 
 jobs:
-  db:
-    name: Setup MySQL
+  test:
+    name: Frontend Tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
     services:
@@ -27,23 +27,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Setup database
-        run: |
-          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ./sql -name '*.sql' | sort))"
-        working-directory: ./docker
-
-  test:
-    name: Frontend Tests on ${{ matrix.os }}
-    needs: db
-    timeout-minutes: 10
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false # 特定の job が失敗しても他の job をキャンセルしない
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -55,6 +38,10 @@ jobs:
         working-directory: ./back
       - name: Install browsers
         run: npx playwright install --with-deps
+      - name: Setup database
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ./sql -name '*.sql' | sort))"
+        working-directory: ./docker
       - name: Start back
         run: |
           npm run build
