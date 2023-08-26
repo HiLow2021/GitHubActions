@@ -35,10 +35,23 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependencies
+      - name: Install front dependencies
         run: npm ci
+      - name: Install back dependencies
+        run: npm ci
+        working-directory: ./back
       - name: Install browsers
         run: npx playwright install --with-deps
+      - name: Setup database
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ../docker/sql -name '*.sql' | sort))"
+      - name: Start back
+        run: |
+          npm run build
+          npm rub start &
+        env:
+          DATABASE_URL: "mysql://root:password@localhost:3306/mydb"
+        working-directory: ./back
       - name: Start front
         run: |
           npm run build
