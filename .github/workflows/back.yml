@@ -33,10 +33,11 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: npm ci
-      - name: Setup Prisma
-        run: npx prisma generate
-      - name: Import sql to db
+      - name: Setup database
         run: |
+          npx prisma generate
           mysql -h 127.0.0.1 -P 3306 -u root --password=password -e "$(cat $(find ../docker/sql -name '*.sql' | sort))"
       - name: Run tests
         run: npm run test
+        env:
+          DATABASE_URL: "mysql://root:password@localhost:3306/mydb"
