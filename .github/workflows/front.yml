@@ -6,20 +6,28 @@ on:
   pull_request:
     branches: [ main ]
 
+defaults:
+  run:
+    working-directory: ./front
+
 jobs:
   test:
-    name: Frontend Tests on ${{ matrix.os }} and ${{ matrix.browser }}
+    name: Frontend Tests on ${{ matrix.os }}
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: false # 特定の job が失敗しても他の job をキャンセルしない
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        browser: [chromium, firefox, webkit]
-        include:
-          - os: windows-latest
-            browser: webkit
-            skip: true # Playwright does not support WebKit on Windows yet
+    services:
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: password 
+          MYSQL_DATABASE: mydb 
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 # サービスのヘルスチェックを設定する
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,11 +37,7 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: npm ci
-        working-directory: ./front
       - name: Install browsers
         run: npx playwright install --with-deps
-        working-directory: ./front
       - name: Run tests
-        if: ${{ !matrix.skip }}
-        run: npx playwright test --browser=${{ matrix.browser }}
-        working-directory: ./front
+        run: npx playwright test
