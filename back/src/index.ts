@@ -31,4 +31,4 @@ const server = app.listen(port, () => {
     console.log(`start on port ${port}`);
 });
 
-export { app, server };
+export { app, prisma, server };

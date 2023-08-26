@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, test } from '@jest/globals';
 import supertest from 'supertest';
-import { app, server } from '../src/index';
+import { app, server, prisma } from '../src/index';
 
 const request = supertest(app);
 
@@ -12,8 +12,9 @@ const data = [
     { id: 5, name: '渡辺健太', age: 45 }
 ];
 
-afterAll(() => {
+afterAll(async () => {
     server.close();
+    await prisma.$disconnect();
 });
 
 describe('API Test', () => {
