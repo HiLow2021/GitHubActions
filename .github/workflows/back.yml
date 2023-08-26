@@ -35,11 +35,9 @@ jobs:
         run: npm ci
       - name: Setup Prisma
         run: npx prisma generate
-      - name: Import SQL file
+      - name: Import sql to db
         run: |
-          mysql -h 127.0.0.1 -P 3306 -u root --password=password mydb < ../docker/sql/01_create_database.sql
-          mysql -h 127.0.0.1 -P 3306 -u root --password=password mydb < ../docker/sql/02_create_table.sql
-          mysql -h 127.0.0.1 -P 3306 -u root --password=password mydb < ../docker/sql/03_insert_table.sql
+          mysql -h 127.0.0.1 -P 3306 -u root --password=password mydb -e "$(cat $(find ../docker/sql -name '*.sql'))"
       - name: Run tests
         run: npm run test
         env:
